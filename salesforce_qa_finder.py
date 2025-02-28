@@ -117,7 +117,8 @@ def remove_duplicates(jobs):
 # Extract Experience from Job Title & Description
 def extract_experience(title):
     match = re.search(r'(\d+)[+-]?\s*(?:years?|yrs?|y)', title, re.IGNORECASE)
-return int(match.group(1)) if match else 0  
+    return int(match.group(1)) if match else 0  # Indented correctly inside the function
+
  
 # Run Job Searches Asynchronously
 async def fetch_all_jobs():
