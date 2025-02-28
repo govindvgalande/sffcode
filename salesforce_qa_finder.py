@@ -72,26 +72,34 @@ async def scrape_indeed_jobs():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
  
 driver.get("https://www.indeed.com/jobs?q=Salesforce+QA&l=Pune&remotejob=remote")
- 
+# Function 2: Async Web Scraping (Indeed Jobs for Pune & Remote)
+async def scrape_indeed_jobs():
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    driver.get("https://www.indeed.com/jobs?q=Salesforce+QA&l=Pune&remotejob=remote")
+
     jobs = []
     try:
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "job_seen_beacon")))
- 
+
         job_cards = driver.find_elements(By.CLASS_NAME, "job_seen_beacon")
- 
+
         for job in job_cards[:20]:  # Get more results
             title = job.find_element(By.TAG_NAME, "h2").text
             link = job.find_element(By.TAG_NAME, "a").get_attribute("href")
             exp = extract_experience(title)
- 
+
             if any(word in title.lower() for word in ["pune", "remote", "hybrid"]):
                 jobs.append({"title": title, "link": link, "experience": exp, "source": "Indeed"})
- 
+
     except Exception as e:
         logging.error(f"Error scraping Indeed: {e}")
- 
+
     driver.quit()
     return jobs
+
  
 # AI Scam Detection (No Fake Jobs)
 def is_real_job(job_title):
