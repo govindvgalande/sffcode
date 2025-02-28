@@ -154,4 +154,4 @@ async def main():
         st.warning("No jobs found! Try adjusting your filters or searching again later.")
  
 if __name__ == "__main__":
-asyncio.run(main())
+    asyncio.run(main())  # Indented under the if statement
